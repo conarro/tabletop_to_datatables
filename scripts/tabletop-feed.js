@@ -29,9 +29,9 @@ function createTableColumns(){
         {"mDataProp": "gender", "sTitle": "Gender", "sClass": "center"},
         {"mDataProp": "age", "sTitle": "Age", "sClass": "center"},
         {"mDataProp": "country", "sTitle": "Country", "sClass": "center"},
-		{"mDataProp": "advice", "sTitle": "Advice", "sClass": "center"},
+        {"mDataProp": "advice", "sTitle": "Advice", "sClass": "center"},
         {"mDataProp": "place", "sTitle": "Advice", "sClass": "center"},
-		{"mDataProp": "locationscrub", "sTitle": "Location Scrub", "sClass": "center"},
+        {"mDataProp": "locationscrub", "sTitle": "Location Scrub", "sClass": "center"},
         {"mDataProp": "place", "sTitle": "Place", "sClass": "center"},
         {"mDataProp": "typeofadvice", "sTitle": "Type of Advice", "sClass": "center"},
         {"mDataProp": "categoryofevent", "sTitle": "Category of Event", "sClass": "center"},
@@ -43,7 +43,7 @@ function createTableColumns(){
         {"mDataProp": "country", "sTitle": "Country", "sClass": "center"},
         {"mDataProp": "name", "sTitle": "Name", "sClass": "center"},
         {"mDataProp": "gender", "sTitle": "Gender", "sClass": "center"}
-	];
+    ];
     return tableColumns;
 }
 
@@ -52,13 +52,33 @@ function writeTableWith(dataSource){
 
     jqueryNoConflict("#demo").html("<table cellpadding='0' cellspacing='0' border='0' class='display table table-bordered table-striped' id='data-table-container'></table>");
 
-    var oTable = jqueryNoConflict("#data-table-container").dataTable({
+    var oTable = jqueryNoConflict("#data-table-container").DataTable({
         "sPaginationType": "bootstrap",
         "iDisplayLength": 25,
         "aaData": dataSource,
         "aoColumns": createTableColumns(),
         "oLanguage": {
             "sLengthMenu": "_MENU_ records per page"
+        },
+        initComplete: function () {
+          this.api().columns().every( function () {
+            var column = this;
+            var select = $('<select><option value=""></option></select>')
+              .appendTo( $(column.header()) )
+              .on( 'change', function () {
+                var val = $.fn.dataTable.util.escapeRegex(
+                  $(this).val()
+                );
+
+                column
+                  .search( val ? '^'+val+'$' : '', true, false )
+                  .draw();
+              });
+
+            column.data().unique().sort().each( function ( d, j ) {
+              select.append( '<option value="'+d+'">'+d+'</option>' )
+            } );
+          } );
         }
     });
 
@@ -66,9 +86,9 @@ function writeTableWith(dataSource){
 
 //define two custom functions (asc and desc) for string sorting
 jQuery.fn.dataTableExt.oSort["string-case-asc"]  = function(x,y) {
-	return ((x < y) ? -1 : ((x > y) ?  0 : 0));
+    return ((x < y) ? -1 : ((x > y) ?  0 : 0));
 };
 
 jQuery.fn.dataTableExt.oSort["string-case-desc"] = function(x,y) {
-	return ((x < y) ?  1 : ((x > y) ? -1 : 0));
+    return ((x < y) ?  1 : ((x > y) ? -1 : 0));
 };
