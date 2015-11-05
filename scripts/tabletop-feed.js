@@ -47,7 +47,7 @@ function writeTableWith(dataSource){
 
   var table = jqueryNoConflict("#datatable").DataTable({
       "sPaginationType": "bootstrap",
-      "iDisplayLength": 10,
+      "iDisplayLength": 5,
       "aaData": dataSource,
       "aoColumns": tableColumns,
       "oLanguage": {
