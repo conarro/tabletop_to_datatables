@@ -13,3 +13,4 @@ select { width: 75px }
 .dataTables_length { padding-left: 10px }
 .dataTables_filter { padding-right: 10px }
 .table-striped tbody>tr:nth-child(odd)>th>td.sorting_1 { background-color: #D3D6FF }
+.advice-filter { margin-right: 10px; }
