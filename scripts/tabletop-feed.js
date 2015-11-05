@@ -92,7 +92,7 @@ function writeTableWith(dataSource){
           }).length > 0;
 
           rowData = hasActiveFilters ? api.rows({search:'applied'}).data() : api.rows({page: 'current'}).data();
-          debugger;
+
           var imageRows = $.grep(rowData, function(value, index) {
              return value.imageurl;
           });
